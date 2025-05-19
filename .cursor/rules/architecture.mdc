@@ -1,0 +1,62 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Architecture
+
+## Directory Structure
+
+> Emphasises **re-usability** and **domain-centric modules** without a monorepo.
+> Works with Electron + Vite/React + TypeScript, managed by **pnpm**.
+
+```text
+matrix-os/
+├─ .github/                # CI / release pipelines (GitHub Actions)
+├─ public/                 # Static assets copied as-is
+├─ src/
+│   ├─ main/               # 👑 Electron “main” process
+│   │   ├─ bootstrap/          # createWindow, auto-update, deep-link
+│   │   ├─ ipc/                # Main-side IPC handlers
+│   │   └─ security/           # CSP, contextIsolation helpers
+│   ├─ preload/            # contextBridge APIs (1 file per domain) :contentReference[oaicite:0]{index=0}
+│   ├─ renderer/           # React UI (Chromium context)
+│   │   ├─ app/                # AppShell, routing, providers
+│   │   ├─ features/           # 🌱 1 folder = 1 feature (Tasks, Goals …)
+│   │   │   ├─ tasks/
+│   │   │   │   ├─ components/
+│   │   │   │   ├─ pages/
+│   │   │   │   └─ hooks/
+│   │   │   └─ focus/
+│   │   ├─ ui/                 # Headless, themeable atoms/molecules
+│   │   └─ index.tsx
+│   ├─ domain/             # **Pure business logic — no Electron/React** :contentReference[oaicite:1]{index=1}
+│   │   ├─ task/
+│   │   │   ├─ entities.ts
+│   │   │   ├─ valueObjects.ts
+│   │   │   ├─ services.ts
+│   │   │   └─ policies.ts
+│   │   ├─ goal/
+│   │   └─ focus/
+│   ├─ infrastructure/     # Adapters that fulfil domain interfaces
+│   │   ├─ storage/            # electron-store, sqlite …
+│   │   ├─ notifications/      # OS toast wrappers
+│   │   └─ ipc/                # Thin wrappers for Renderer ⇄ Main
+│   ├─ shared/             # Cross-cutting utilities, constants, types
+│   └─ tests/
+│       ├─ unit/               # Vitest on domain & utils
+│       └─ e2e/                # Playwright desktop flows
+├─ tsconfig.base.json       # Path aliases: "@domain/*", "@ui/*"
+├─ package.json             # **single** package; pnpm scripts
+├─ pnpm-lock.yaml
+└─ .env                     # Build-time env vars (never secrets)
+```
+
+### Building Blocks Responsibility
+
+- **src/main**: Bootstraps windows, security, IPC routing.
+- **src/preload**: Whitelists safe APIs via `contextBridge`.
+- **src/renderer**: Pure web stack (React/Vite) — hot reload, testable.
+- **src/domain**: Entities, value objects, services: **no imports from Electron/React**.
+- **src/infrastructure**: Implements repositories / gateways defined in domain.
+- **src/shared**: Logger, error types, date helpers, colour tokens.

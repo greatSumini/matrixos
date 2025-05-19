@@ -1,0 +1,109 @@
+.task-list-container {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 1rem;
+}
+
+.task-list-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.task-list-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background-color: var(--surface);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+}
+
+.task-item:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-color: var(--primary);
+}
+
+.task-checkbox {
+  margin-right: 1rem;
+}
+
+.task-checkbox input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.task-content {
+  flex: 1;
+}
+
+.task-title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.task-title.completed {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+.task-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.task-due-date {
+  color: var(--text-secondary);
+  background-color: var(--background);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.task-priority {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.priority-high {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--error);
+}
+
+.priority-medium {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--warning);
+}
+
+.priority-low {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: var(--info);
+}
+
+.task-tag {
+  background-color: rgba(79, 70, 229, 0.1);
+  color: var(--primary);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+} 
